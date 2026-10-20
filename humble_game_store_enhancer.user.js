@@ -4,8 +4,8 @@
 // @version      0.4.3
 // @description  Humble Bundle Steam Integration with robust status checks, review scores, and overlay fixes.
 // @author       gbzret4d
-// @updateURL    https://raw.githubusercontent.com/gbzret4d/game-store-enhancer/develop/humble_game_store_enhancer.user.js
-// @downloadURL  https://raw.githubusercontent.com/gbzret4d/game-store-enhancer/develop/humble_game_store_enhancer.user.js
+// @updateURL    https://raw.githubusercontent.com/vshikhar95/game-store-enhancer/personal/humble_game_store_enhancer.user.js
+// @downloadURL  https://raw.githubusercontent.com/vshikhar95/game-store-enhancer/personal/humble_game_store_enhancer.user.js
 // @match        https://www.humblebundle.com/*
 // @match        https://store.steampowered.com/agecheck/*
 // @grant        GM_xmlhttpRequest

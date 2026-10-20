@@ -4,8 +4,8 @@
 // @version      0.1.1
 // @description  Fanatical Steam Integration with API Interceptor and Breadcrumb Filtering.
 // @author       gbzret4d
-// @updateURL    https://raw.githubusercontent.com/gbzret4d/game-store-enhancer/develop/fanatical_game_store_enhancer.user.js
-// @downloadURL  https://raw.githubusercontent.com/gbzret4d/game-store-enhancer/develop/fanatical_game_store_enhancer.user.js
+// @updateURL    https://raw.githubusercontent.com/vshikhar95/game-store-enhancer/personal/fanatical_game_store_enhancer.user.js
+// @downloadURL  https://raw.githubusercontent.com/vshikhar95/game-store-enhancer/personal/fanatical_game_store_enhancer.user.js
 // @match        https://www.fanatical.com/*
 // @connect      store.steampowered.com
 // @connect      cdn.jsdelivr.net

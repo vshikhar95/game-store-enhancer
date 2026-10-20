@@ -1,0 +1,51 @@
+# Opens (or updates) a PR into `personal` when gbzret4d/game-store-enhancer's
+# develop branch changes code. Data-only commits (data/) are ignored.
+# Nothing reaches Tampermonkey until that PR is reviewed and merged.
+name: Upstream sync PR
+
+on:
+  schedule:
+    - cron: "30 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mirror upstream and open a PR if code changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          git clone --quiet --no-checkout "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git" fork
+          cd fork
+          git remote add upstream https://github.com/gbzret4d/game-store-enhancer.git
+          git fetch --quiet upstream develop
+          new=$(git rev-parse FETCH_HEAD)
+
+          if git fetch --quiet origin upstream-mirror 2>/dev/null; then
+            old=$(git rev-parse FETCH_HEAD)
+            if git diff --quiet "$old" "$new" -- . ':(exclude)data'; then
+              echo "No upstream code changes since last sync."
+              exit 0
+            fi
+          fi
+
+          # Plain push (no --force): if upstream ever rewrites history this fails,
+          # which is worth a look rather than silently following it.
+          git push --quiet origin "$new:refs/heads/upstream-mirror"
+
+          open=$(gh pr list --repo "$REPO" --head upstream-mirror --base personal --state open --json number --jq length)
+          if [ "$open" = "0" ]; then
+            gh pr create --repo "$REPO" --head upstream-mirror --base personal \
+              --title "Upstream changes from gbzret4d/game-store-enhancer" \
+              --body "Review before merging: anything merged into \`personal\` reaches Tampermonkey. Check for new @match/@connect/@grant lines, access to localStorage/cookies/tokens, and requests to new domains." \
+              || echo "Nothing to propose (upstream is already contained in personal)."
+          else
+            echo "Existing sync PR updated."
+          fi
