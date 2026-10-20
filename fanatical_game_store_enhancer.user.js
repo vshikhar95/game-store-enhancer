@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Fanatical Game Store Enhancer
 // @namespace    https://github.com/gbzret4d/game-store-enhancer
-// @version      0.1.1
+// @version      0.1.2
 // @description  Fanatical Steam Integration with API Interceptor and Breadcrumb Filtering.
 // @author       gbzret4d
 // @updateURL    https://raw.githubusercontent.com/vshikhar95/game-store-enhancer/personal/fanatical_game_store_enhancer.user.js
@@ -134,6 +134,9 @@
         .fgse-pos-abs { position: absolute !important; top: 10px; left: 10px; }
         .fgse-stack { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; z-index: 1000; }
         .fgse-name { max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        /* Fanatical's own card labels (New To Bundle, In Library, Recommended, Star Deal...) sit in the
+           same top-left corner; drop the badge below them instead of underneath. */
+        :is(.PickAndMixCard, .HitCard):has(.card-label, .hitCardLabel) .fgse-pos-abs { top: 34px !important; }
     `);
 
     // --- Core Logic ---
