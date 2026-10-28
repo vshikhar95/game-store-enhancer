@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Humble Bundle Game Store Enhancer
 // @namespace    https://github.com/gbzret4d/game-store-enhancer
-// @version      0.4.4
+// @version      0.4.5
 // @description  Humble Bundle Steam Integration with robust status checks, review scores, and overlay fixes.
 // @author       gbzret4d
 // @updateURL    https://raw.githubusercontent.com/vshikhar95/game-store-enhancer/personal/humble_game_store_enhancer.user.js
@@ -253,7 +253,8 @@
             console.log(LOG_PREFIX, "Fetching UserData...");
             GM_xmlhttpRequest({
                 method: "GET",
-                url: "https://store.steampowered.com/dynamicstore/userdata/",
+                url: "https://store.steampowered.com/dynamicstore/userdata/?t=" + Date.now(),
+                nocache: true,
                 anonymous: false, // Force cookies
                 headers: {
                     "Origin": "https://store.steampowered.com",

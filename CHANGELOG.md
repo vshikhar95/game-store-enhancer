@@ -3,6 +3,13 @@ All notable changes to the **Game Store Enhancer** userscript will be documented
 
 The `develop` branch has been updated to **v2.0.23**.
 
+## [0.4.5] - 2026-10-28
+- **Fixed:** Steam ownership (OWNED/WISHLIST badges) missing while logged into Steam.
+  - Steam serves `dynamicstore/userdata/` with `Cache-Control: private,max-age=3600`, so the browser kept returning a stale logged-out copy (0 owned).
+  - The request now adds a `?t=` cache buster, `nocache: true` and a Steam `Referer` header.
+  - Applies to Humble 0.4.5, Fanatical 0.1.3, DailyIndieGame 0.1.1, GOG 0.1.1 and IndieGala Steam Linker 3.2.5.
+  - IndieGala Steam Linker no longer caches (or loads) an empty userdata result.
+
 ## [0.4.3] - 2026-02-19
 - **Fixed:** Steam UserData (Owned/Wishlist) checks failing for some users.
   - Added strict `anonymous: false` and `Referer` headers to `GM_xmlhttpRequest` to ensure Steam Session Cookies are sent.

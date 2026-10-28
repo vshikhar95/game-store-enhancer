@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Fanatical Game Store Enhancer
 // @namespace    https://github.com/gbzret4d/game-store-enhancer
-// @version      0.1.2
+// @version      0.1.3
 // @description  Fanatical Steam Integration with API Interceptor and Breadcrumb Filtering.
 // @author       gbzret4d
 // @updateURL    https://raw.githubusercontent.com/vshikhar95/game-store-enhancer/personal/fanatical_game_store_enhancer.user.js
@@ -146,7 +146,9 @@
         return new Promise(resolve => {
             GM_xmlhttpRequest({
                 method: "GET",
-                url: "https://store.steampowered.com/dynamicstore/userdata/",
+                url: "https://store.steampowered.com/dynamicstore/userdata/?t=" + Date.now(),
+                nocache: true,
+                headers: { "Referer": "https://store.steampowered.com/" },
                 onload: (res) => {
                     try {
                         const data = JSON.parse(res.responseText);

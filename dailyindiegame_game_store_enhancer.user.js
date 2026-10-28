@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DailyIndieGame Game Store Enhancer
 // @namespace    https://github.com/gbzret4d/game-store-enhancer
-// @version      0.1.0
+// @version      0.1.1
 // @description  DailyIndieGame Steam Integration with direct ID extraction from URLs.
 // @author       gbzret4d
 // @updateURL    https://raw.githubusercontent.com/gbzret4d/game-store-enhancer/develop/dailyindiegame_game_store_enhancer.user.js
@@ -70,7 +70,9 @@
         return new Promise(resolve => {
             GM_xmlhttpRequest({
                 method: "GET",
-                url: "https://store.steampowered.com/dynamicstore/userdata/",
+                url: "https://store.steampowered.com/dynamicstore/userdata/?t=" + Date.now(),
+                nocache: true,
+                headers: { "Referer": "https://store.steampowered.com/" },
                 onload: (res) => {
                     try {
                         const data = JSON.parse(res.responseText);

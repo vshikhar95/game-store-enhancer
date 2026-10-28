@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         IndieGala Steam Linker
 // @namespace    https://github.com/gbzret4d/indiegala-steam-linker
-// @version      3.2.4
+// @version      3.2.5
 // @description  The ultimate fix for IndieGala. Adds Steam links, Review Scores, and Ownership Status. (v3.2.4: Fix Overlay Position)
 // @author       gbzret4d
 // @match        https://www.indiegala.com/*
@@ -167,8 +167,10 @@
         }
     };
 
+    const cachedUserData = CACHE.get('ssl_userdata');
     const STATE = {
-        userData: CACHE.get('ssl_userdata') || { owned: [], wishlist: [], ignored: [] },
+        // Ignore a cached empty (logged-out) result from older versions
+        userData: (cachedUserData && cachedUserData.owned.length) ? cachedUserData : { owned: [], wishlist: [], ignored: [] },
         requests: [],
         processing: false,
         activeRequest: 'None'
@@ -267,7 +269,9 @@
         queueRequest("UserData", () => new Promise(resolve => {
             GM_xmlhttpRequest({
                 method: "GET",
-                url: "https://store.steampowered.com/dynamicstore/userdata/",
+                url: "https://store.steampowered.com/dynamicstore/userdata/?t=" + Date.now(),
+                nocache: true,
+                headers: { "Referer": "https://store.steampowered.com/" },
                 onload: (res) => {
                     try {
                         const data = JSON.parse(res.responseText);
@@ -290,7 +294,8 @@
                     try {
                         const data = JSON.parse(res.responseText);
                         STATE.userData.wishlist = Object.keys(data || {});
-                        CACHE.set('ssl_userdata', STATE.userData);
+                        // Don't cache a logged-out (empty) result
+                        if (STATE.userData.owned.length) CACHE.set('ssl_userdata', STATE.userData);
                         updateDebugPanel();
                     } catch (e) { }
                     resolve();
